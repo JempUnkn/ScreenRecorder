@@ -59,7 +59,7 @@ Este é um gravador de tela simples feito com HTML, CSS e JavaScript. Ele permit
 
 Esse modelo pode ser facilmente ajustado conforme os recursos que você adicionar no futuro!
 
-# [Pagina web](https://jempunkn.github.io/ScreenRecorder
+# [Pagina web](https://jempunkn.github.io/ScreenRecorder)
 
 ---
 ## Licença
