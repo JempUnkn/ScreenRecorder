@@ -32,6 +32,65 @@ nav a {
     cursor: pointer;
 }
 
+#startBtn {
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #000;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    box-shadow: 2px 2px 0px #000;
+    transition: all 0.3s ease;
+}
+
+#startBtn:hover {
+    background-color: #000;
+    color: #fff;
+    transform: translateY(3px);
+    box-shadow: 0 0 0 #000;
+}
+
+#stopBtn {
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #000;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    box-shadow: 2px 2px 0px #000;
+    transition: all 0.3s ease;
+}
+
+#stopBtn:hover {
+    background-color: #000;
+    color: #fff;
+    transform: translateY(3px);
+    box-shadow: 0 0 0 #000;
+}
+
+
+#themeToggle {
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #000;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    box-shadow: 2px 2px 0px #000;
+    transition: all 0.3s ease;
+}
+
+#themeToggle:hover {
+    background-color: #000;
+    color: #fff;
+    transform: translateY(3px);
+    box-shadow: 0 0 0 #000;
+}
+
+
 .songs button {
     margin: 10px;
     padding: 4px 5px;
@@ -48,7 +107,6 @@ nav a {
     justify-items: center;
     /* display: none; */
 }
-
 
 
 /* deteccao */
@@ -87,6 +145,7 @@ nav a {
 .popup button:hover {
     background-color: #0056b3;
 }
+
 
 
 #recordedVideo {
