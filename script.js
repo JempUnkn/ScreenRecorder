@@ -4,7 +4,10 @@ let startTime;
 let timerInterval
 
 
-const timeElapsed = document.getElementById('timeElapsed')
+let includeSystemAudio = true; // Controla áudio do sistema
+
+
+const timeElapsed = document.getElementById('timeElapsed');
 const popupContent = document.getElementById('popupContent');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
@@ -15,6 +18,7 @@ const copyBtn = document.getElementById('copyBtn');
 const downloadBtn = document.getElementById('downloadBtn');
 const batteryStatus = document.getElementById('batteryStatus');
 const timeDisplay = document.getElementById('time');
+const audioToggle = document.getElementById('audioToggle'); // Botão para áudio do sistema
 
 
 
@@ -30,12 +34,26 @@ const startTimer = () => {
     }, 1000);
 };
 
+// Função para formatar o tempo decorrido
+function formatTime(elapsedTime) {
+    const date = new Date(elapsedTime);
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+}
 
+// Atualizar o tempo decorrido
+function updateTime() {
+    const elapsedTime = Date.now() - startTime;
+    timeElapsed.textContent = formatTime(elapsedTime);
+}
 
 
 startBtn.addEventListener('click', async () => {
     const stream = await navigator.mediaDevices.getDisplayMedia({
-        video: { mediaSource: 'screen' }
+        video: { mediaSource: 'screen' },
+        audio: includeSystemAudio, // Inclui áudio do sistema
     });
 
     mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
@@ -52,45 +70,52 @@ startBtn.addEventListener('click', async () => {
         recordedChunks = [];
     };
 
-    // Para o cronômetro ao parar a gravação
-    clearInterval(timerInterval);
+    // Ao começar a gravação, inicia o cronômetro
+    startTime = Date.now();
+    timerInterval = setInterval(updateTime, 1000);
 
     mediaRecorder.start();
     startBtn.disabled = true;
     stopBtn.disabled = false;
-    startTime = Date.now();
-    startTimer();  // Iniciar o cronômetro
     toggleRecordingUI();
-    
-    // Inicia o cronômetro
-    timerInterval = setInterval(updateTime, 1000);
 });
 
+
+
+// Botão para ativar/desativar áudio do sistema
+audioToggle.addEventListener('click', () => {
+    includeSystemAudio = !includeSystemAudio;
+    audioToggle.textContent = includeSystemAudio ? '🟢 Áudio Ativado' : '🔴 Áudio Desativado';
+});
+
+
+
+function closeSharingWindow() {
+    if (sharingWindow) {
+        sharingWindow.remove(); // Remove o elemento do DOM
+    }
+}
 stopBtn.addEventListener('click', () => {
     if (mediaRecorder && mediaRecorder.state !== 'inactive') {
         mediaRecorder.stop();  // Isso deve parar a gravação
         startBtn.disabled = false;
         stopBtn.disabled = true;
-        
         // Mostrar o popup e o vídeo gravado
-        popupContent.style.display = 'block';
+        popupContent.style.display = 'grid';
+        // Fechar a janela do Compartilhamento de Tela
+        closeSharingWindow();
     }
 });
-
-
-
-
-
 stopBtn.addEventListener('click', () => {
     mediaRecorder.stop();
     startBtn.disabled = false;
     stopBtn.disabled = true;
-    
-    
-    
-    // Mostrar o popup e o vídeo gravado
-    popupContent.style.display = 'block';
+    popupContent.style.display = 'grid';
+    // Fechar a janela do Compartilhamento de Tela
+    closeSharingWindow();
 });
+
+
 
 
 themeToggle.addEventListener('click', () => {
@@ -149,27 +174,7 @@ setInterval(() => {
 recordedVideo.addEventListener('canplaythrough', () => {
     startBtn.disabled = false;  // Desabilitar o botão de Start
     stopBtn.disabled = true;  // Habilitar o botão de Stop
-    popupContent.style.display = 'block';  // Mostrar o popup
-});
-
-function updateTime() {
-    const elapsedTime = Date.now() - startTime;
-    const date = new Date(elapsedTime);
-
-    // Formatando o tempo como A%M%S%D%H%M%S
-    const hours = String(date.getUTCHours()).padStart(2, '0');
-    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-    const seconds = String(date.getUTCSeconds()).padStart(2, '0');
-    const days = String(Math.floor(elapsedTime / (1000 * 60 * 60 * 24))).padStart(2, '0');
-    const years = String(Math.floor(elapsedTime / (1000 * 60 * 60 * 24 * 365.25))).padStart(4, '0');
-
-    timeElapsed.textContent = `${years}:${days}:${hours}:${minutes}:${seconds}`;
-}
-
-recordedVideo.addEventListener('loadedmetadata', () => {
-    // Quando o vídeo estiver pronto para ser reproduzido
-    if (popupContent.style.display === 'block') {
-        // Exibe o tempo final do vídeo
-        clearInterval(timerInterval);
-    }
+    popupContent.style.display = 'grid';  // Mostrar o popup
+    console.log('Tempo final do vídeo:', recordedVideo.duration);
+    clearInterval(timerInterval);
 });
