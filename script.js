@@ -98,7 +98,7 @@ startBtn.addEventListener('click', async () => {
         audio: includeSystemAudio, // Inclui áudio do sistema
     });
 
-    mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/mp4' });
 
     mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
@@ -107,7 +107,7 @@ startBtn.addEventListener('click', async () => {
     };
 
     mediaRecorder.onstop = () => {
-        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const blob = new Blob(recordedChunks, { type: 'video/mp4' });
         recordedVideo.src = URL.createObjectURL(blob);
         recordedChunks = [];
     };
@@ -171,11 +171,28 @@ copyBtn.addEventListener('click', () => {
     });
 });
 
+
+
+
+
 downloadBtn.addEventListener('click', () => {
     const url = recordedVideo.src;
+
+    // Obter a data e hora atual
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Mês começa do 0
+    const year = now.getFullYear();
+
+    // Formatar a data e hora no padrão desejado
+    const formattedDate = `${hours}h${minutes}_${day}-${month}-${year}`;
+
+    // Criar o link para download
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'recorded_video.webm';
+    a.download = `recorded_video_${formattedDate}.mp4`; // Adicionar a data formatada
     a.click();
 });
 
