@@ -23,43 +23,45 @@ const audioToggle = document.getElementById('audioToggle'); // Botão para áudi
 
 
 
-        function detectDeviceAndShowPopup() {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-            // Verificar se o dispositivo é móvel
-            const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+function detectDeviceAndShowPopup() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-            if (isMobile) {
-                // Criar o fundo embaçado (blur)
-                const blurBackground = document.createElement('div');
-                blurBackground.className = 'blur-background';
+    // Verificar se o dispositivo é móvel
+    const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
 
-                // Criar o pop-up
-                const popup = document.createElement('div');
-                popup.className = 'popup';
-                popup.innerHTML = `
-                    <p>O WebFront do Screen Recorder não é compatível com dispositivos móveis.</p>
-                    <button onclick="closePopup()">Fechar</button>
-                `;
+    if (isMobile) {
+        // Criar o fundo embaçado (blur)
+        const blurBackground = document.createElement('div');
+        blurBackground.className = 'blur-background';
 
-                // Adicionar o pop-up ao fundo embaçado
-                blurBackground.appendChild(popup);
+        // Criar o pop-up
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+        popup.innerHTML = `
+            <p>O WebFront do Screen Recorder não é compatível com dispositivos móveis.</p>
+            <button onclick="closePopup()">Fechar</button>
+        `;
 
-                // Adicionar o fundo embaçado ao corpo do documento
-                document.body.appendChild(blurBackground);
-            }
-        }
+        // Adicionar o pop-up ao fundo embaçado
+        blurBackground.appendChild(popup);
 
-        function closePopup() {
-            // Remover o fundo embaçado e o pop-up
-            const blurBackground = document.querySelector('.blur-background');
-            if (blurBackground) {
-                blurBackground.remove();
-            }
-        }
+        // Adicionar o fundo embaçado ao corpo do documento
+        document.body.appendChild(blurBackground);
+    }
+}
 
-        // Chamar a função ao carregar a página
-        window.onload = detectDeviceAndShowPopup;
+function closePopup() {
+    // Remover o fundo embaçado e o pop-up
+    const blurBackground = document.querySelector('.blur-background');
+    if (blurBackground) {
+        blurBackground.remove();
+    }
+}
+
+// Chamar a função ao carregar a página
+window.onload = detectDeviceAndShowPopup;
+
 
 
 
@@ -217,4 +219,21 @@ recordedVideo.addEventListener('canplaythrough', () => {
     popupContent.style.display = 'grid';  // Mostrar o popup
     console.log('Tempo final do vídeo:', recordedVideo.duration);
     clearInterval(timerInterval);
+    startBtn.style.backgroundColor = '';
+    stopBtn.style.backgroundColor = 'rgba(27, 27, 27, 0.178)';
+});
+
+
+
+
+/// parte de cor dos botoes
+startBtn.addEventListener('click', () => {
+    startBtn.style.backgroundColor = 'rgba(27, 27, 27, 0.178)';
+    stopBtn.style.backgroundColor = '';
+});
+
+stopBtn.addEventListener('click', () => {
+    startBtn.style.backgroundColor = '';
+    stopBtn.style.backgroundColor = 'rgba(27, 27, 27, 0.178)';
+    
 });
