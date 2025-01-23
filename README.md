@@ -42,7 +42,8 @@ Este é um gravador de tela simples feito com HTML, CSS e JavaScript. Ele permit
 ├── screen-recorder.js  # Lógica de gravação de tela
 ├── styles.css          # Estilos CSS
 ├── README.md           # Este arquivo
-└── /image               
+└── /image
+     ├── banner.png     # Banner do metatag
      └── icon.png       # Icon 
 ```
 
