@@ -215,7 +215,7 @@ function updateBatteryStatus() {
         const level = battery.level * 100;
         const charging = battery.charging ? '⚡ Carregando' : '🔌 Desconectado';
         batteryElement.textContent = `Status Battery: ${charging}`;
-        batteryElement.textContent = `Battery: ${level}% 🔋`;
+        batteryElement.textContent = `Battery: ${level.toFixed(0)}% 🔋`;
     });
 }
 setInterval(updateBatteryStatus, 5000);
