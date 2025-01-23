@@ -23,6 +23,46 @@ const audioToggle = document.getElementById('audioToggle'); // Botão para áudi
 
 
 
+        function detectDeviceAndShowPopup() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            // Verificar se o dispositivo é móvel
+            const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+
+            if (isMobile) {
+                // Criar o fundo embaçado (blur)
+                const blurBackground = document.createElement('div');
+                blurBackground.className = 'blur-background';
+
+                // Criar o pop-up
+                const popup = document.createElement('div');
+                popup.className = 'popup';
+                popup.innerHTML = `
+                    <p>O WebFront do Screen Recorder não é compatível com dispositivos móveis.</p>
+                    <button onclick="closePopup()">Fechar</button>
+                `;
+
+                // Adicionar o pop-up ao fundo embaçado
+                blurBackground.appendChild(popup);
+
+                // Adicionar o fundo embaçado ao corpo do documento
+                document.body.appendChild(blurBackground);
+            }
+        }
+
+        function closePopup() {
+            // Remover o fundo embaçado e o pop-up
+            const blurBackground = document.querySelector('.blur-background');
+            if (blurBackground) {
+                blurBackground.remove();
+            }
+        }
+
+        // Chamar a função ao carregar a página
+        window.onload = detectDeviceAndShowPopup;
+
+
+
 
 const startTimer = () => {
     timerInterval = setInterval(() => {
