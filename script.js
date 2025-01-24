@@ -197,29 +197,26 @@ downloadBtn.addEventListener('click', () => {
 });
 
 
-navigator.getBattery().then(battery => {
-    const batteryElement = document.getElementById('batteryStatus');
-    const charging = battery.charging ? '⚡ Carregando' : '🔌 Desconectado';
-    const updateBatteryStatus = () => {
-        batteryStatus.textContent = `Status Battery: ${charging}`;
-        batteryStatus.textContent = `Battery: ${Math.round(battery.level * 100)}% 🔋`;
-    };
-
-    battery.addEventListener('levelchange', updateBatteryStatus);
-    updateBatteryStatus();
-}, setInterval(updateBatteryStatus, 5000));
 
 function updateBatteryStatus() {
     navigator.getBattery().then(battery => {
         const batteryElement = document.getElementById('batteryStatus');
         const level = battery.level * 100;
-        const charging = battery.charging ? '⚡ Carregando' : '🔌 Desconectado';
-        batteryElement.textContent = `Status Battery: ${charging}`;
         batteryElement.textContent = `Battery: ${level.toFixed(0)}% 🔋`;
     });
 }
 setInterval(updateBatteryStatus, 5000);
+updateBatteryStatus();
 
+function updateBatteryCharge() {
+    navigator.getBattery().then(battery => {
+        const batteryCharge = document.getElementById('batteryCharge');
+        const charging = battery.charging ? 'Carregando ⚡' : 'Desconectado 🔌';
+        batteryCharge.textContent = `Status: ${charging}`
+    });
+}
+setInterval(updateBatteryCharge, 5000);
+updateBatteryCharge();
 
 setInterval(() => {
     const time = new Date();
